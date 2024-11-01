@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Productos>;
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Lista de Elementos</title>
+</head>
+<body>
+ <h1>Lista de Elementos</h1>
+ <table>
+ @foreach (var elemento in Model)
+ {
+ <tr>
+    <td>@elemento.IdProducto</td>
+    <td>@elemento.Descripcion</td>
+    <tr>@elemento.Precio</tr>
+</tr>
+ }
+</table>
+</body>
+</html>
