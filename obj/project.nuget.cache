@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iFFIeeBDLKu+3oIxdAsdyvM0Ec9IDv549QMd3n3Kz3X/Be8d5H7TdNyheB9lVn8R2tBBF/nZNMCvyROST4Hh8Q==",
+  "dgSpecHash": "ynMi2uPQqf96F4hgCJGg7KCEdSJJwVUljuHWVl72CUwV2n2TKZZQCWNPsoyFcaEc+S2S6WYkeHt+3HFa79tLTQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alumno\\Downloads\\Nueva\\tl2-tp6-2024-MiguelAngelBusto\\tl2-tp6-2024-MiguelAngelBusto.csproj",
+  "projectFilePath": "C:\\Users\\Alumno\\Downloads\\tl2-tp6-2024-MiguelAngelBusto\\tl2-tp6-2024-MiguelAngelBusto.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alumno\\.nuget\\packages\\microsoft.data.sqlite\\8.0.10\\microsoft.data.sqlite.8.0.10.nupkg.sha512",
     "C:\\Users\\Alumno\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.10\\microsoft.data.sqlite.core.8.0.10.nupkg.sha512",

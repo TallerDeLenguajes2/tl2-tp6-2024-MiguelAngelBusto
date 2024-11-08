@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model Productos;
+
+<form asp-asp-controller='Productos' asp-action="EditarProducto">
+  <div class="form-group" >
+    <input asp-for="@Model.IdProducto" type="hidden" class="form-control" placeholder="Nombre producto" value="@Model.IdProducto">
+  </div>
+  <div class="form-group">
+    <label asp-for="@Model.Descripcion">Nombre</label>
+    <input asp-for="@Model.Descripcion" type="text" class="form-control" placeholder="Nombre producto" value="@Model.Descripcion">
+  </div>
+  <div class="form-group">
+    <label asp-for="@Model.Precio">Precio</label>
+    <input asp-for="@Model.Precio" type="text" class="form-control" placeholder="Precio" value="@Model.Precio">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
