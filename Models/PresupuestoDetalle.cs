@@ -10,6 +10,9 @@ public class PresupuestoDetalle
         this.Productos = productos;
         this.Cantidad = cantidad;
     }
+    public PresupuestoDetalle()
+    {
+    }
 
     public int Cantidad { get => cantidad; set => cantidad = value; }
     internal Productos Productos { get => productos; set => productos = value; }

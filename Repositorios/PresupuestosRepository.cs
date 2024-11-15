@@ -58,7 +58,6 @@ public class PresupuestosRepository
                     };
                 }
             }
-
             connection.Close();
         }
         return presupuesto;
@@ -91,12 +90,17 @@ public class PresupuestosRepository
                 {
                     while (reader.Read())
                     {
-                        Presupuestos prosu = new Presupuestos();
-                        prosu.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
-                        prosu.NombreDestinatario = reader["NombreDestinatario"].ToString();
-                        prosu.FechaCreacion = Convert.ToDateTime(reader["FechaCreacion"]);
-                        productos.Add(prosu);
-                    }
+                        Presupuestos pre = new Presupuestos();
+                        pre.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
+                        pre.NombreDestinatario = reader["NombreDestinatario"].ToString();
+                        pre.FechaCreacion = Convert.ToDateTime(reader["FechaCreacion"]);
+
+                        pre.setDetallesPresupuesto(
+                            this.GetPresupuestosDetalles(Convert.ToInt32(reader["idPresupuesto"]))
+                        );
+
+                        productos.Add(pre);
+                     }
                     connection.Close();
                 }
 
@@ -104,5 +108,58 @@ public class PresupuestosRepository
             return productos;
         }
 
+
+    private List<PresupuestoDetalle> GetPresupuestosDetalles(int idPresupuesto) {
+        List<PresupuestoDetalle> pdList = new List<PresupuestoDetalle>();
+
+        try
+        {
+            using (SqliteConnection connection = new SqliteConnection(connectionString)) 
+            {
+                string queryString = @"SELECT 
+                    Productos.idProducto,
+                    Productos.Descripcion,
+                    Productos.Precio,
+                    PresupuestosDetalle.Cantidad
+                FROM 
+                    Presupuestos
+                LEFT JOIN 
+                    PresupuestosDetalle ON Presupuestos.idPresupuesto = PresupuestosDetalle.idPresupuesto
+                LEFT JOIN 
+                    Productos ON PresupuestosDetalle.idProducto = Productos.idProducto
+                WHERE 
+                    Presupuestos.idPresupuesto = @idPresupuesto;";
+
+                using (SqliteCommand command = new SqliteCommand(queryString, connection)) {
+                    command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+                    connection.Open();
+                    using (SqliteDataReader reader = command.ExecuteReader()) {
+                        while (reader.Read()) {
+                            PresupuestoDetalle pd = new PresupuestoDetalle();
+
+                            if(reader.IsDBNull(reader.GetOrdinal("idProducto"))) {
+                                return pdList;
+                            }
+
+                            Productos product = new Productos();
+                            product.IdProducto = Convert.ToInt32(reader["idProducto"]);
+                            product.Descripcion = reader["Descripcion"].ToString();
+                            product.Precio = Convert.ToInt32(reader["Precio"]);
+
+                            pd.Productos = product;
+                            pd.Cantidad = Convert.ToInt32(reader["Cantidad"]);
+
+                            pdList.Add(pd);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener detalles de presupuesto: {ex.Message}");
+        }
+        return pdList;
+    }
 }
 

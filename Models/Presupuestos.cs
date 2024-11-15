@@ -51,7 +51,9 @@ namespace tl2_tp6_2024_MiguelAngelBusto.Models
             }
             return contador;
         }
-
+        public void setDetallesPresupuesto(List<PresupuestoDetalle> pdList) {
+        this.Detalle = pdList;
+        }
 
     }
 }

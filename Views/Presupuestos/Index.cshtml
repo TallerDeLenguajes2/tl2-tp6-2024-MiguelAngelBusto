@@ -1,0 +1,109 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Presupuestos>;
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista de Elementos</title>
+</head>
+
+<body>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Detalles</th>
+                <th scope="col">Extras</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var elemento in Model)
+            {
+                <tr>
+                    <td>@elemento.IdPresupuesto</td>
+                    <td>@elemento.NombreDestinatario</td>
+                   <td>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailsModal-@elemento.IdPresupuesto">
+                        Detalles
+                    </button>
+
+                    <div class="modal fade" id="detailsModal-@elemento.IdPresupuesto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="detailsModalLabel-@elemento.IdPresupuesto" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLabel-@elemento.IdPresupuesto">Detalles del presupuesto</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Precio C/Producto</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio Total</th>
+                                                <th>Editar</th>
+                                                <th>Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (elemento.Detalle != null && elemento.Detalle.Any())
+                                            {
+                                                int total = 0;
+                                                foreach (var detalle in elemento.Detalle)
+                                                {
+                                                    <tr>
+                                                        <td>@detalle.Productos.Descripcion</td>
+                                                        <td>$@detalle.Productos.Precio</td>
+                                                        <td>@detalle.Cantidad</td>
+                                                        <td>$@(detalle.Productos.Precio * detalle.Cantidad)</td>
+                                                        <td>
+                                                            <a class="btn btn-primary" asp-controller="Presupuestos" asp-action="EditarPresupuestoDetalle"
+                                                            asp-route-idPresupuesto="@elemento.IdPresupuesto" asp-route-idProducto="@detalle.Productos.IdProducto">Editar</a>
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-danger" asp-controller="Presupuestos" asp-action="EliminarPresupuestoDetalle"
+                                                            asp-route-idPresupuesto="@elemento.IdPresupuesto" asp-route-idProducto="@detalle.Productos.IdProducto"
+                                                            onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>
+                                                        </td>
+                                                    </tr>
+                                                    total += detalle.Productos.Precio * detalle.Cantidad;
+                                                }
+                                                <tr>
+                                                    <td class="fw-bold">Total del Pedido: $@total</td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="6">No hay detalles disponibles.</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                    <td>
+                        <a class="btn btn-outline-warning" asp-controller="Productos" asp-action="EditarProducto"
+                            asp-route-idProducto="@elemento.IdPresupuesto">Editar</a>
+                        <a class="btn btn-outline-danger" asp-controller="Productos" asp-action="DeleteProducto"
+                            asp-route-idProducto="@elemento.IdPresupuesto"
+                            onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+
+<a class="btn btn-primary" asp-controller="Productos" asp-action="Crear">Crear</a>
+
+</html>
