@@ -98,10 +98,14 @@ namespace tl2_tp6_2024_MiguelAngelBusto.Repositorios;
         using (SqliteConnection connection = new SqliteConnection(connectionString))
         {
             string deleteQuery = "DELETE FROM Productos WHERE idProducto = @IdProducto;";
-            SqliteCommand command = new SqliteCommand(deleteQuery, connection);
+            string delete2query = "DELETE FROM PresupuestosDetalle WHERE idProducto = @IdProducto;";
+            SqliteCommand command = new SqliteCommand(delete2query, connection);
             command.Parameters.AddWithValue("@IdProducto", id);
 
             connection.Open();
+            command.ExecuteNonQuery();
+            command = new SqliteCommand(deleteQuery, connection);
+            command.Parameters.AddWithValue("@IdProducto", id);
             command.ExecuteNonQuery();
             connection.Close();
         }
